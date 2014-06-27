@@ -1,0 +1,272 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Packrat: Reproducible package management for R</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <script src="javascripts/codehighlight.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Packrat by example</h1>
+        
+          <p class="homelink"><a href="index.html">&lt; Return to homepage</a></p>
+        
+        <p class="view"><a href="https://github.com/rstudio/packrat">View the Project on GitHub <small>rstudio/packrat</small></a></p>
+        <!--
+        <ul>
+          <li><a href="https://github.com/rstudio/packrat/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/rstudio/packrat/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/rstudio/packrat">View On <strong>GitHub</strong></a></li>
+        </ul>
+        -->
+      </header>
+      <section>
+        <p>This tutorial will walk you through some of the most common tasks you’ll want
+to do with packrat, and explain the fundamental concepts behind the package on
+the way.</p>
+
+<h2 id="first-things-first">First things first</h2>
+
+<p>You’re getting ready to start a new project, so you create a new directory that
+will eventually contain all the .R scripts, CSV data, and other files that are
+needed for this particular project.</p>
+
+<p>You know you’re going to need to make use of several R packages over the course
+of this project. So before you write your first line of code, set up the
+project directory to use Packrat with <code>packrat::init</code>:</p>
+
+<pre><code>&gt; packrat::init("~/projects/babynames")
+Adding these packages to packrat:
+            _         
+    packrat   0.2.0.128
+
+Fetching sources for packrat (0.2.0.128) ... OK (GitHub)
+Snapshot written to '/Users/kevin/projects/babynames/packrat/packrat.lock'
+Installing packrat (0.2.0.128) ... OK (built source)
+init complete!
+Packrat mode on. Using library in directory:
+- "~/projects/babynames/packrat/lib" 
+</code></pre>
+
+<p>(Tip: If the current working directory is the project directory, you can omit
+the path.)</p>
+
+<p>After initializing the project, you will be placed into packrat mode in the
+project directory. You’re ready to go!</p>
+
+<p>You’re no longer in an ordinary R project; you’re in a Packrat project. The
+main difference is that <strong>a packrat project has its own private package
+library</strong>. Any packages you install from inside a packrat project are only
+available to that project; and packages you install outside of the project are
+not available to the project.</p>
+
+<p>This is what we mean by “isolation” and it’s Very Good Thing, as it means that
+upgrading a package for one project won’t break a totally different project
+that just happens to reside on the same machine, even if that package contained
+incompatible changes.</p>
+
+<p>A packrat project contains a few extra files and directories. The <code>init()</code>
+function creates these files for you, if they don’t already exist.</p>
+
+<ul>
+  <li><strong><code>packrat/packrat.lock</code>:</strong> Lists the precise package versions that were used
+to satisfy dependencies, including dependencies of dependencies. (This file
+should never be edited by hand!)</li>
+  <li><strong><code>packrat/packrat.opts</code>:</strong> Project-specific packrat options. These can be
+queried and set with <code>get_opts</code> and <code>set_opts</code>; see <code>?"packrat-options"</code> for
+more information.</li>
+  <li><strong><code>packrat/lib/</code>:</strong> Private package library for this project.</li>
+  <li><strong><code>packrat/src/</code>:</strong> Source packages of all the dependencies that packrat has
+been made aware of.</li>
+  <li><strong><code>.Rprofile</code>:</strong> Directs R to use the private package library (when it is
+started from the project directory).</li>
+</ul>
+
+<h2 id="adding-removing-and-updating-packages">Adding, removing, and updating packages</h2>
+
+<p>Adding a package in a Packrat project is easy. The first step is to start R
+inside your Packrat project, and install the package however you normally do;
+usually that means either the <code>install.packages()</code> function or the “Install
+Packages” button in your favorite R IDE. Let’s do this now, with the <code>reshape2</code>
+package.</p>
+
+<pre><code>&gt; install.packages("reshape2")
+</code></pre>
+
+<p>If you completed the previous steps correctly, you just installed the
+<code>reshape2</code> package from CRAN into your project’s private package library. Let’s
+take a snapshot to save the changes in Packrat:</p>
+
+<pre><code>&gt; packrat::snapshot()
+
+Adding these packages to packrat:
+             _       
+    plyr       1.8.1 
+    Rcpp       0.11.2
+    reshape2   1.4   
+    stringr    0.6.2 
+
+Fetching sources for plyr (1.8.1) ... OK (CRAN current)
+Fetching sources for Rcpp (0.11.2) ... OK (CRAN current)
+Fetching sources for reshape2 (1.4) ... OK (CRAN current)
+Fetching sources for stringr (0.6.2) ... OK (CRAN current)
+Snapshot written to '/Users/kevin/projects/babynames/packrat/packrat.lock'
+</code></pre>
+
+<p>If you have automatic snapshots turned on, Packrat will record package upgrades
+and additions in the background, so you don’t even need to remember to call
+<code>::snapshot()</code> manually unless you’re performing a less common action.</p>
+
+<p>When packrat takes a snapshot, it looks in the project’s private package
+library for packages that have been added, modified, or removed since the last
+time <code>snapshot</code> was called. For packages that were added or modified, packrat
+attempts to go find the uncompiled <em>source package</em> from CRAN, BioConductor, or
+GitHub (caveat: only for packages that were installed using <code>devtools</code> version
+1.4 or later), and save them in the <code>packrat/src</code> project subdirectory. It
+also records metadata about each package in the <code>packrat.lock</code> file.</p>
+
+<p>Because we save source packages for all of your dependencies, packrat makes
+your project more <strong>reproducible</strong>. When someone else wants to run your
+project–even if that someone else is you, years in the future, dusting off
+some old backups–they won’t need to try to figure out what versions of what
+packages you were running, and where you got them.</p>
+
+<h2 id="restoring-snapshots">Restoring snapshots</h2>
+
+<p>Once your project has a snapshot, you can easily install the packages from that
+snapshot into your private library at any time.</p>
+
+<p>You’ll need to do this, for example, when copying the project to a new
+computer, especially to one with a different operating system. Let’s simulate
+this by exiting R and then deleting the <code>library</code> subdirectory in your project.
+Then launch R from your project directory again.</p>
+
+<p>Packrat automates the whole process for you – upon restarting R in this
+directory, you should see the following output:</p>
+
+<pre><code>Packrat is not installed in the local library -- attempting to bootstrap an installation...
+&gt; Installing packrat into project private library:
+- '/Users/kevin/projects/babynames/packrat/lib/x86_64-apple-darwin13.1.0/3.2.0'
+* installing *source* package ‘packrat’ ...
+** R
+** inst
+** preparing package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded
+* DONE (packrat)
+&gt; Attaching packrat
+&gt; Restoring library
+Installing plyr (1.8.1) ... OK (built source)
+Installing Rcpp (0.11.2) ... OK (built source)
+Installing reshape2 (1.4) ... OK (built source)
+Installing stringr (0.6.2) ... OK (built source)
+&gt; Packrat bootstrap successfully completed. Entering packrat mode...
+Packrat mode on. Using library in directory:
+- "~/projects/babynames/packrat/lib"
+</code></pre>
+
+<p>All of the packages in the snapshot have now been installed in your project’s
+newly created private package library.</p>
+
+<pre><code>&gt; packrat::status()
+Up to date.
+</code></pre>
+
+<p>Another reason to restore from the packrat snapshot is if you remove a package
+that you later realize you still needed, or if one of your collaborators makes
+their own changes to the snapshot. In these cases, you can call
+<code>packrat::restore()</code>.</p>
+
+<p>Let’s remove the plyr package, and use <code>packrat::restore()</code> to bring it back.</p>
+
+<pre><code>&gt; remove.packages("plyr")
+Removing package from ‘/Users/kevin/projects/babynames/packrat/lib/x86_64-apple-darwin13.1.0/3.2.0’
+(as ‘lib’ is unspecified)
+
+&gt; packrat::status()
+
+The following packages are used in your code, tracked by packrat, but no longer present in your library:
+            from   to
+    plyr   1.8.1   NA
+
+Use packrat::restore() to restore these libraries.
+
+&gt; packrat::restore()
+Installing plyr (1.8.1) ... OK (built source)
+</code></pre>
+
+<h2 id="cleaning-up">Cleaning up</h2>
+
+<p>Package libraries can grow over time to include many packages that were needed
+at one time but are no longer used. Packrat can analyze your code and try to
+determine which packages you’re using so you can keep your library tidy. Let’s
+take a look at <code>::status()</code> again:</p>
+
+<pre><code>&gt; packrat::status()
+The following packages are installed but not needed:
+             _       
+    plyr       1.8.1 
+    Rcpp       0.11.2
+    reshape2   1.4   
+    stringr    0.6.2 
+
+Use packrat::clean() to remove them. Or, if they are actually needed
+by your project, add `library(packagename)` calls to a .R file
+somewhere in your project.
+</code></pre>
+
+<p>Notice these packages are “installed but not needed”. Packrat attempts to
+ascertain which packages your project needs by analyzing the *.R script files
+in your project and looking for calls like <code>library()</code> and <code>require()</code>. </p>
+
+<p>Our sample project doesn’t have any R code yet, so Packrat isn’t aware that we
+need any packages. Let’s add some code that depends on the packages. Create a
+.R file in your project directory with the following contents and save it:</p>
+
+<pre><code>library(reshape2)
+</code></pre>
+
+<p>Now let’s take another look at <code>::status()</code>:</p>
+
+<pre><code>&gt; packrat::status()
+Up to date.
+</code></pre>
+
+<p>Of course, if we were actually finished with the packages, we’d have used
+<code>packrat::clean()</code> to remove them.</p>
+
+
+      </section>
+    </div>
+    <footer>
+      <p>&copy; 2013-2014 RStudio, Inc.</p>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-20375833-7");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+    <a href="https://github.com/rstudio/packrat"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
+  </body>
+</html>

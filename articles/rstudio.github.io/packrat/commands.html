@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Packrat: Reproducible package management for R</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <script src="javascripts/codehighlight.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Packrat commands</h1>
+        
+          <p class="homelink"><a href="index.html">&lt; Return to homepage</a></p>
+        
+        <p class="view"><a href="https://github.com/rstudio/packrat">View the Project on GitHub <small>rstudio/packrat</small></a></p>
+        <!--
+        <ul>
+          <li><a href="https://github.com/rstudio/packrat/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/rstudio/packrat/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/rstudio/packrat">View On <strong>GitHub</strong></a></li>
+        </ul>
+        -->
+      </header>
+      <section>
+        <style type="text/css">
+pre {
+  font-weight: bold;
+  margin-top: 42px !important;
+}
+</style>
+
+<p>The following is a list of the R functions in the packrat package that you’ll
+use most often. You can find more detailed documentation by typing
+<code>help(package="packrat")</code> at the R console.</p>
+
+<p>For more background on how these commands fit into the packrat workflow, see
+<a href="walkthrough.html">the walkthrough</a>.</p>
+
+<ul>
+  <li><code>packrat::init()</code>: Initializes the current working directory as a Packrat
+project.</li>
+</ul>
+
+<p>When you want to manage the state of your private library, you can use the
+Packrat functions:</p>
+
+<ul>
+  <li><code>packrat::snapshot()</code>: Save the current state of your library.</li>
+  <li><code>packrat::restore()</code>: Restore the library state saved in the most recent
+snapshot.</li>
+  <li><code>packrat::clean()</code>: Remove unused packages from your library.</li>
+</ul>
+
+<p>Share a Packrat project with <code>bundle</code> and <code>unbundle</code>:</p>
+
+<ul>
+  <li><code>packrat::bundle()</code>: Bundle a packrat project, for easy sharing.</li>
+  <li><code>packrat::unbundle()</code>: Unbundle a packrat project, generating a project
+directory with libraries restored.</li>
+</ul>
+
+<p>Navigate projects and set/get options with:</p>
+
+<ul>
+  <li><code>packrat::on()</code>, <code>packrat::off()</code>: Toggle packrat mode on and off, for navigating
+between projects within a single R session.</li>
+  <li><code>packrat::get_opts</code>, <code>packrat::set_opts</code>: Get/set project-specific settings.</li>
+</ul>
+
+<p>There are also utility functions for using and managing packages in the
+external / user library, and can be useful for leveraging packages in the user
+library that you might not want as project-specific dependencies, e.g.
+<code>devtools</code>, <code>knitr</code>, <code>roxygen2</code>:</p>
+
+<ul>
+  <li><code>packrat::extlib()</code>: Load an external package.</li>
+  <li><code>packrat::with_extlib()</code>: With an external package, evaluate an expression. The
+external package is loaded only for the duration of the evaluated
+expression.</li>
+</ul>
+
+
+      </section>
+    </div>
+    <footer>
+      <p>&copy; 2013-2014 RStudio, Inc.</p>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-20375833-7");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+    <a href="https://github.com/rstudio/packrat"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
+  </body>
+</html>

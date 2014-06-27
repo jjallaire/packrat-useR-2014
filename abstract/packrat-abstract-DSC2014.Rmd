@@ -1,0 +1,68 @@
+---
+title: "Packrat - A Dependency Management System for R"
+author:
+ - name: J.J. Allaire
+   affiliation: [1]
+   email: jj@rstudio.com
+   contact: yes
+affiliation:
+ - RStudio, Inc
+bibliography: bibliography.bib
+output: rticles::use_r_abstract;
+---
+
+Dependency management in \proglang{R} is difficult. Different \proglang{R}
+projects can have different dependencies, and can often depend on different
+versions of the same \proglang{R} packages. The suite of \proglang{R} packages
+served by CRAN and BioConductor is constantly evolving and growing, and while
+\emph{R core} and package authors make large efforts to maintain backwards
+compatibility, it is not guaranteed as \proglang{R} and its packages evolve.
+
+There has been a lot of discussion as to how the \proglang{R} project,
+alongside the CRAN repository, could be augmented to support better versioning
+in projects [@DBLP:journals/corr/abs-1303-2140]. \pkg{packrat} uses a form of
+\textbf{local versioned package management}, to ensure a project and its
+versioned dependencies are coupled together -- similar to JavaScript's
+\emph{node.js} and the packages on its associated repository \emph{NPM}.
+
+As a result, \pkg{packrat} helps the user by isolating dependencies within a
+project, ensuring that they do not conflict with package requirements in other
+projects. In addition, package sources are recorded, so that packages can be
+easily upgraded and rolled back, using the archives available on CRAN and
+BioConductor, or to local package sources packaged alongside the project.
+Furthermore, users collaborating on a project can use \pkg{packrat} to ensure
+that their \proglang{R} environments are compatible, hence avoiding
+compatibility problems in collaborative projects.
+
+\pkg{packrat} helps solve the following problems:
+
+\begin{itemize}
+
+\item{\textbf{Local Dependency Management:}}{ Because each \pkg{packrat}
+project uses its own private library, dependencies are effectively isolated
+from other projects, and so versioning conflicts can be controlled and avoided.
+A user can \emph{bootstrap} a project to infer and set up the local library the
+project requires, and with later modifications to this local library, the user
+can \emph{snapshot} and save the current library state, or \emph{restore} and
+roll back to the last \emph{snapshot}ted state.}
+
+\item{\textbf{Portability:}}{ \pkg{packrat} makes it easy to \emph{bundle} a
+project for sharing. A \emph{bundle}d project can easily be \emph{unbundle}d to
+restore the same \proglang{R} environment that was originally used in the
+project, even across different platforms.}
+
+\item{\textbf{Reproducibility:}}{ \pkg{packrat} records the exact package
+versions a project depends on, and ensures those exact versions are the ones
+that get installed wherever the \pkg{packrat} project is used.}
+
+\end{itemize}
+
+> \emph{Replication is the ultimate standard by which scientific claims are judged.} [@Peng2011]
+
+In this talk, we will outline a number of common usage scenarios with
+\pkg{packrat}, and demonstrate how it can be used to control and manage
+dependencies within your project.
+
+**References**
+
+

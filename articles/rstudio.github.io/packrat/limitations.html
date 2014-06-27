@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Packrat: Reproducible package management for R</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <script src="javascripts/codehighlight.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Limitations and caveats</h1>
+        
+          <p class="homelink"><a href="index.html">&lt; Return to homepage</a></p>
+        
+        <p class="view"><a href="https://github.com/rstudio/packrat">View the Project on GitHub <small>rstudio/packrat</small></a></p>
+        <!--
+        <ul>
+          <li><a href="https://github.com/rstudio/packrat/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/rstudio/packrat/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/rstudio/packrat">View On <strong>GitHub</strong></a></li>
+        </ul>
+        -->
+      </header>
+      <section>
+        <p>Here are a couple of things to be aware of as you begin to use packrat.</p>
+
+<h3 id="package-types">Package types</h3>
+
+<p>Packrat currently only works with three types of packages: </p>
+
+<ol>
+  <li>Packages installed from a CRAN repository (or a CRAN-like repository such as
+BioConductor)</li>
+  <li>Packages installed by <code>devtools::install_github</code>, version 1.4 or later.</li>
+  <li>Local source packages (via the <code>source.packages</code> parameter)</li>
+</ol>
+
+<p>If you depend on a package that doesn’t fall into any of these types, you’ll
+need to coerce it into one of these types. The easiest way to do this is to put
+the package’s source into a <code>.tar.gz</code> file, and use the <code>source.packages</code>
+parameter. Note that if you use this mechanism, you will need to update the
+version of the package every time you make a change to the source code; Packrat
+relies on version numbers for local source packages to know when they’ve been
+updated.</p>
+
+<h3 id="building-packages">Building packages</h3>
+
+<p>Packrat prefers to install binary versions of packages from CRAN-like
+repositories when available. However, many packages don’t have binaries, and
+even those that do now may not have them in the near future (CRAN does not
+archive binaries, only sources). </p>
+
+<p>Packrat stores the sources for each package locally, so that your project never
+depends on having platform binaries available from a mirror.</p>
+
+<p>However, this means it is almost certain that you’ll need to be able to build
+source packages locally in order to use Packrat. See <a href="http://www.rstudio.com/ide/docs/packages/prerequisites">Package Development
+Prerequisites</a> to learn
+more about the tools to install for your operating system. It’s recommended
+that you and your collaborators prepare your machines for package development
+before using Packrat.</p>
+
+      </section>
+    </div>
+    <footer>
+      <p>&copy; 2013-2014 RStudio, Inc.</p>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-20375833-7");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+    <a href="https://github.com/rstudio/packrat"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
+  </body>
+</html>
