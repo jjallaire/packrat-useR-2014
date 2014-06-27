@@ -124,10 +124,29 @@ That would solve part of the problem, but wouldn't account for:
     
 > * Creates a private package library for a given R project (i.e. working directory)
 
-> * `snapshot` function that records the package versions used by a project and downloads their source code for storage with the project.
+> * Maintains two components of your project:
+    - The project private library, containing R packages your project is using, and
+    - The last 'snapshotted' state, which can be used to save and restore the state of the private library.
     
-> * `restore` function that applies the snapshot to a directory (building packages from source as necessary)
+---
+
+![packrat-anatomy](packrat-anatomy.png)
+
+## Packrat as a Possible Solution
+
+Packrat appropriately modifies the library paths so all existing R workflows will be applied to the project private library.
+
+While within Packrat mode,
+
+* `install.packages()`, `remove.packages()`, `update.packages()` `devtools::install_github()`...
+
+will modify the **private project library**, *not* the **user library**!
+
+* `library` and `require` will only load packages from the private project library, _not_ the user library -- thereby achieving isolation.
+
+* `packrat::snapshot` records the packages used by a project and downloads their source code for storage with the project,
     
+* `packrat::restore` applies the last snapshot to the project library (rebuilding packages from source as necessary)
 
 ## Packrat Fundamentals
 
