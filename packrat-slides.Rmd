@@ -20,7 +20,7 @@ output:
     
 * Across space (moving code from a desktop to a server, or between the systems of collaborators)
 
-* In R we do better than in many environments, but we don't do well enough.
+* In R we do better than many other environments, but we can still do better.
 
 
 ## Tools for Reproducibility
@@ -43,7 +43,7 @@ output:
     - At best, change behavior in subtle ways
     - At worst, outright break previous code
    
-* As a result, an analysis or report that works today against e.g. R 3.1 it unlikely to work without modification in 5 years time.
+* As a result, an analysis or report that works today against e.g. R 3.1.0 is unlikely to work without modification in 5 years time.
 
 * This is already a widely observed problem with R scripts and Sweave/knitr documents that users attempt to re-run years (or even months) after they are originally developed.
 
@@ -63,7 +63,7 @@ That would solve part of the problem, but wouldn't account for:
 
 * Packages obtained from other repositories
 
-* Development versions of packages installed from R-forge and GitHub
+* Development versions of packages installed from R-Forge and GitHub
 
 * Internally developed packages
 
@@ -84,7 +84,7 @@ That would solve part of the problem, but wouldn't account for:
 
 ## Freezing is the answer, but what to freeze?
 
-* Freezing CRAN solve only a subset of the problem, and introduces it's own problems.
+* Freezing CRAN solve only a subset of the problem, and introduces its own problems.
     - No changes to CRAN are required to provide a highly robust system of R package dependency management
     
 * The only complete answer to this problem is freezing projects. 
@@ -135,7 +135,7 @@ That would solve part of the problem, but wouldn't account for:
 packrat::init()
 ```
 
-Create a packrat project within a directory, giving the project it's own private package library.
+Create a packrat project within a directory, giving the project its own private package library.
 
 ```{r, eval=FALSE}
 packrat::snapshot()
@@ -159,12 +159,12 @@ packrat::init()
 ```
 Adding these packages to packrat:
             _          
-    packrat   0.2.0.130
+    packrat   0.3.0
 
-Fetching sources for packrat (0.2.0.130) ... OK (GitHub)
+Fetching sources for packrat (0.3.0) ... OK (GitHub)
 Snapshot written to '~/projects/reshape/packrat/packrat.lock'
-Installing packrat (0.2.0.130) ... OK (built source)
-Bootstrap complete!
+Installing packrat (0.3.0.0) ... OK (built source)
+Initialization complete!
 ```
 
 ## Snapshotting Installed Packages
@@ -245,7 +245,7 @@ packrat::unbundle("reshape-2014-06-24.tar.gz", where = "~/Desktop")
 ```
 - Untarring 'reshape-2014-06-24.tar.gz' in directory '~/Desktop'...
 - Restoring project library...
-Installing packrat (0.2.0.130) ... OK (built source)
+Installing packrat (0.3.0) ... OK (built source)
 Installing Rcpp (0.11.2.1) ... OK (built source)
 Installing stringr (0.6.2) ... OK (downloaded binary)
 Installing plyr (1.8.1) ... OK (downloaded binary)
